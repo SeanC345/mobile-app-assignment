@@ -145,3 +145,25 @@ fun deleteGolfCourse() {
         println("Invalid ID entered")
     }
 }
+
+fun searchGolfCourse() {
+    println("\n--- Search Golf Course ---")
+
+    print("Enter ID: ")
+    val id = readlnOrNull()?.toLongOrNull()
+
+    if (id != null){
+        val course = store.findOne(id)
+
+        if (course != null) {
+            println(
+                "Found: ID: ${course.id} | Name: ${course.name} |" +
+                "Location: ${course.location} | Holes: ${course.holes}"
+            )
+        } else {
+            println("No golf course found with ID $id")
+        }
+    } else {
+        println("Invalid ID entered")
+    }
+}
