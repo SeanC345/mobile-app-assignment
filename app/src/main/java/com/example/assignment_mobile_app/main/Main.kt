@@ -82,3 +82,43 @@ fun listGolfCourses() {
         }
     }
 }
+
+fun updateGolfCourse() {
+    println("\n--- Update Golf Course ---")
+
+    listGolfCourses()
+    if (store.findAll().isEmpty()) return
+
+    print("\nEnter ID of golf course to update: ")
+    val id = readlnOrNull()?.toLongOrNull()
+
+    if (id != null && store.findOne(id) != null) {
+        print("Enter new course name: ")
+        val name = readlnOrNull()?.trim().orEmpty()
+
+        print("Enter new location: ")
+        val location = readlnOrNull()?.trim().orEmpty()
+
+        print("Enter new number of holes: ")
+        val holes = readlnOrNull()?.toIntOrNull() ?: 18
+
+        if (name.isNotEmpty()) {
+            val updated = store.update(
+                GolfCourseModel(
+                    id =id,
+                    name = name,
+                    location = location,
+                    holes = holes
+                )
+            )
+
+            if (updated) {
+                println("Golf Course updated successfully.")
+            }
+        } else {
+            println("Course name cannot be empty. update cancelled")
+        }
+    } else {
+        println("Golf Course with ID $id not found")
+    }
+}
