@@ -1,6 +1,7 @@
 package com.example.assignment_mobile_app.main
 
 import com.example.assignment_mobile_app.models.GolfCourseMemStore
+import com.example.assignment_mobile_app.models.GolfCourseModel
 
 val store = GolfCourseMemStore()
 
@@ -37,4 +38,31 @@ fun menu(): Int {
     print("\nEnter option: ")
 
     return readlnOrNull()?.toIntOrNull() ?: -1
+}
+
+fun addGolfCourse() {
+    println("\n--- Add Golf Course ---")
+
+    print("Enter Course Name: ")
+    val name = readlnOrNull()?.trim().orEmpty()
+
+    print("Enter Location: ")
+    val location = readlnOrNull()?.trim().orEmpty()
+
+    print("Enter Number of holes: ")
+    val holes = readlnOrNull()?.toIntOrNull() ?: 18
+
+    if (name.isNotEmpty()) {
+        val course = GolfCourseModel(
+            name = name,
+            location = location,
+            holes = holes
+        )
+
+        store.create(course)
+
+        println("Golf Course added successfully with ID: ${course.id}")
+    } else {
+        println("Course name cannot be empty. Creation cancelled.")
+    }
 }
