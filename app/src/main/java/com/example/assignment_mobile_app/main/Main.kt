@@ -122,3 +122,26 @@ fun updateGolfCourse() {
         println("Golf Course with ID $id not found")
     }
 }
+
+fun deleteGolfCourse() {
+    println("\n--- Delete Golf Course ---")
+
+    listGolfCourses()
+
+    if(store.findAll().isEmpty()) return
+
+    print("\nEnter ID of Golf Course to delete: ")
+    val id = readlnOrNull()?.toLongOrNull()
+
+    if (id != null) {
+        val deleted = store.delete(id)
+
+        if(deleted) {
+            println("Golf Course with ID $id deleted successfully.")
+        } else {
+            println("Golf Course with ID $id not found.")
+        }
+    } else {
+        println("Invalid ID entered")
+    }
+}
