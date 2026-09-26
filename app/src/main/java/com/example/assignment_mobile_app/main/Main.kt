@@ -66,3 +66,19 @@ fun addGolfCourse() {
         println("Course name cannot be empty. Creation cancelled.")
     }
 }
+
+fun listGolfCourses() {
+    println("\n--- All Golf Courses ---")
+
+    val courses = store.findAll()
+
+    if (courses.isEmpty()) {
+        println("No golf courses stored yet.")
+    } else {
+        courses.forEach {
+            println(
+                "ID: ${it.id} | Name: ${it.name} | Location: ${it.location} | Holes: ${it.holes}"
+            )
+        }
+    }
+}
