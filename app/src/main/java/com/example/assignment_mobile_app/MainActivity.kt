@@ -1,3 +1,4 @@
+package com.example.assignment_mobile_app
 import android.os.Bundle
 import android.content.Intent
 import android.view.Gravity
@@ -5,8 +6,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.example.assignment_mobile_app.AppData
-import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
     private lateinit var listLayout: LinearLayout
@@ -38,6 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         val addButton = Button(this).apply {
             text = "Add Golf Course"
+            setOnClickListener {
+                val intent = Intent(
+                    this@MainActivity,
+                    AddEditActivity::class.java
+                )
+                startActivity(intent)
+            }
         }
 
         listLayout = LinearLayout(this).apply {
