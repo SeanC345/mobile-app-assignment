@@ -90,9 +90,29 @@ class MainActivity : AppCompatActivity() {
                 text = "Holes: ${course.holes}"
                 textSize = 14F
             }
+            val editButton = Button(this).apply{
+                text = "Edit"
+                setOnClickListener {
+                    val intent = Intent(
+                        this@MainActivity,
+                        AddEditActivity::class.java
+                    )
+                    intent.putExtra("id", course.id)
+                    startActivity(intent)
+                }
+            }
+            val deleteButton = Button(this).apply{
+                text = "Delete"
+                setOnClickListener {
+                    AppData.golfCourses.delete(course.id)
+                    displayGolfCourses()
+                }
+            }
             courseLayout.addView(courseName)
             courseLayout.addView(courseLocation)
             courseLayout.addView(courseHoles)
+            courseLayout.addView(editButton)
+            courseLayout.addView(deleteButton)
 
             listLayout.addView(courseLayout)
         }
