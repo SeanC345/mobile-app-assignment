@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.addCoursebutton)
 
         viewCoursesButton.setOnClickListener {
-
+            val intent = Intent(this, GolfCourseListActivity::class.java)
+            startActivity(intent)
         }
 
         addCourseButton.setOnClickListener {
