@@ -3,6 +3,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assignment_mobile_app.models.GolfCourseModel
@@ -12,59 +13,40 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var nameInput: EditText
     private lateinit var locationInput: EditText
     private lateinit var holesInput: EditText
+    private lateinit var formTitle: TextView
 
     private var editingId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        createUserInterface()
+        setContentView(R.layout.activity_add_edit)
+
+        nameInput = findViewById(R.id.nameInput)
+        locationInput = findViewById(R.id.locationInput)
+        holesInput = findViewById(R.id.holesInput)
+
+        val saveButton = findViewById<Button>(R.id.saveButton)
+        val cancelButton = findViewById<Button>(R.id.cancelButton)
+
+        saveButton.setOnClickListener {
+            saveCourse()
+        }
+
+        cancelButton.setOnClickListener {
+            finish()
+        }
+
+        formTitle = findViewById(R.id.formTitle)
 
         editingId = intent.getLongExtra("id", -1L)
 
         if(editingId != -1L){
+            formTitle.text = "Edit Golf Course"
             loadExistingCourse(editingId!!)
         }
     }
 
-    private fun createUserInterface(){
-        val root = LinearLayout(this).apply{
-            orientation = LinearLayout.VERTICAL
-            setPadding(32,32,32,32)
-        }
-        nameInput = EditText(this).apply{
-            hint = "Golf Course Name"
-        }
-
-        locationInput = EditText(this).apply{
-            hint = "Location"
-        }
-
-        holesInput = EditText(this).apply{
-            hint = "Number of Holes"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
-        }
-        val saveButton = Button(this).apply{
-            text = "Save"
-            setOnClickListener {
-                saveCourse()
-            }
-        }
-        val cancelButton = Button(this).apply{
-            text = "Cancel"
-
-            setOnClickListener {
-                finish()
-            }
-        }
-        root.addView(nameInput)
-        root.addView(locationInput)
-        root.addView(holesInput)
-        root.addView(saveButton)
-        root.addView(cancelButton)
-
-        setContentView(root)
-    }
 
     private fun loadExistingCourse(id: Long){
         val course = AppData.golfCourses.findOne(id)
