@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hole_options">
+        <item>9 Holes</item>
+        <item>18 Holes</item>
+    </string-array>
+</resources>
