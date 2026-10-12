@@ -26,6 +26,14 @@
         android:inputType="text"
         android:minHeight="48dp" />
 
+    <Spinner
+        android:id="@+id/filterSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:entries="@array/filter_options"
+        android:spinnerMode="dropdown"/>
+
     <TextView
         android:id="@+id/noResultsText"
         android:layout_width="match_parent"

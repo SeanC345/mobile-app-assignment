@@ -7,7 +7,9 @@ import android.widget.EditText
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ class GolfCourseListActivity : AppCompatActivity() {
     private lateinit var adapter: GolfCourseAdapter
     private lateinit var searchInput: EditText
     private lateinit var noResultsText: TextView
+    private lateinit var filterSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +33,7 @@ class GolfCourseListActivity : AppCompatActivity() {
 
         searchInput = findViewById(R.id.searchInput)
         noResultsText = findViewById(R.id.noResultsText)
+        filterSpinner = findViewById(R.id.filterSpinner)
 
         adapter = GolfCourseAdapter(
             AppData.golfCourses.findAll(),
@@ -66,6 +70,20 @@ class GolfCourseListActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
+
+        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ){
+                updateCourses()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?){
+
+            }
+        }
     }
     private fun editCourse(course: GolfCourseModel) {
         val intent = Intent(this, AddEditActivity::class.java)
@@ -80,10 +98,20 @@ class GolfCourseListActivity : AppCompatActivity() {
 
     private fun updateCourses() {
         val searchText = searchInput.text.toString().trim()
+        val selectedFilter = filterSpinner.selectedItem.toString()
 
         val filteredCourses = AppData.golfCourses.findAll().filter { course ->
+
+            val matchesSearch =
             course.name.contains(searchText, ignoreCase = true) ||
                     course.location.contains(searchText, ignoreCase = true)
+
+            val matchesFilter =
+                selectedFilter == "All Courses" ||
+                        (selectedFilter == "9 holes" && course.holes == 9) ||
+                        (selectedFilter == "18 holes" && course.holes == 18)
+
+            matchesSearch && matchesFilter
         }
 
         adapter.updateCourses(filteredCourses)
