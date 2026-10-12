@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hole_options">
+        <item>9 Holes</item>
+        <item>18 Holes</item>
+    </string-array>
+
+    <string-array name="filter_options">
+        <item>All Courses</item>
+        <item>9 holes</item>
+        <item>18 holes</item>
+    </string-array>
+</resources>

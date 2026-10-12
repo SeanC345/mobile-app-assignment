@@ -1,8 +1,10 @@
 package com.example.assignment_mobile_app
+import android.annotation.SuppressLint
 import android.widget.Button
 import android.widget.LinearLayout
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +14,7 @@ class AddEditActivity : AppCompatActivity() {
 
     private lateinit var nameInput: EditText
     private lateinit var locationInput: EditText
-    private lateinit var holesInput: EditText
+    private lateinit var holesSpinner: Spinner
     private lateinit var formTitle: TextView
 
     private var editingId: Long? = null
@@ -24,7 +26,7 @@ class AddEditActivity : AppCompatActivity() {
 
         nameInput = findViewById(R.id.nameInput)
         locationInput = findViewById(R.id.locationInput)
-        holesInput = findViewById(R.id.holesInput)
+        holesSpinner = findViewById(R.id.holesSpinner)
 
         val saveButton = findViewById<Button>(R.id.saveButton)
         val cancelButton = findViewById<Button>(R.id.cancelButton)
@@ -64,7 +66,11 @@ class AddEditActivity : AppCompatActivity() {
 
         nameInput.setText(course.name)
         locationInput.setText(course.location)
-        holesInput.setText(course.holes.toString())
+        if (course.holes == 9) {
+            holesSpinner.setSelection(0)
+        }else {
+            holesSpinner.setSelection(1)
+        }
     }
 
     private fun saveCourse() {
@@ -75,11 +81,10 @@ class AddEditActivity : AppCompatActivity() {
             nameInput.error = "Course name is required"
             return
         }
-        val holes = holesInput.text.toString().toIntOrNull()
-
-        if(holes == null){
-            holesInput.error = "Enter a valid number"
-            return
+        val holes = if (holesSpinner.selectedItemPosition == 0) {
+            9
+        } else {
+            18
         }
 
         if (editingId == null || editingId == -1L) {

@@ -17,6 +17,33 @@
         android:textSize="28sp"
         android:textStyle="bold" />
 
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Search by name or location"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <Spinner
+        android:id="@+id/filterSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:entries="@array/filter_options"
+        android:spinnerMode="dropdown"/>
+
+    <TextView
+        android:id="@+id/noResultsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No golf courses found"
+        android:textAlignment="center"
+        android:textColor="@color/dark_text"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/courseRecyclerView"
         android:layout_width="match_parent"
