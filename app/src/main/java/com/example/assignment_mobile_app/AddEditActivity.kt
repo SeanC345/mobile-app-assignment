@@ -3,8 +3,11 @@ import android.annotation.SuppressLint
 import android.widget.Button
 import android.widget.LinearLayout
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +26,22 @@ class AddEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_edit)
+
+        val rootLayout = findViewById<View>(R.id.addEditLayout)
+        val originalTopPadding = rootLayout.paddingTop
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.setPadding(
+                view.paddingLeft,
+                originalTopPadding + systemBars.top,
+                view.paddingRight,
+                view.paddingBottom
+            )
+
+            insets
+        }
 
         nameInput = findViewById(R.id.nameInput)
         locationInput = findViewById(R.id.locationInput)

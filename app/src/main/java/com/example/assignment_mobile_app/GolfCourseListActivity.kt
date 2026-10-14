@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.AdapterView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +28,22 @@ class GolfCourseListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_golf_course_list)
+
+        val rootLayout = findViewById<View>(R.id.courseListLayout)
+        val originalTopPadding = rootLayout.paddingTop
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) {view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.setPadding(
+                view.paddingLeft,
+                originalTopPadding + systemBars.top,
+                view.paddingRight,
+                view.paddingBottom
+            )
+
+            insets
+        }
 
         recyclerView = findViewById(R.id.courseRecyclerView)
 

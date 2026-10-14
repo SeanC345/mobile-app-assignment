@@ -49,8 +49,9 @@
         android:id="@+id/holesSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:entries="@array/hole_options" />
+        android:entries="@array/hole_options"
+        android:minHeight="48dp" />
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
