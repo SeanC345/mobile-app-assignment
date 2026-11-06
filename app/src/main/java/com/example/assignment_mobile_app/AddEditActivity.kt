@@ -118,6 +118,14 @@ class AddEditActivity : AppCompatActivity() {
         }else {
             holesSpinner.setSelection(1)
         }
+
+        selectedImageUri = course.imageUri?.let { Uri.parse(it) }
+
+        if (selectedImageUri != null) {
+            imagePreview.setImageURI(selectedImageUri)
+        } else{
+            imagePreview.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
     }
 
     private fun saveCourse() {
@@ -133,12 +141,13 @@ class AddEditActivity : AppCompatActivity() {
         } else {
             18
         }
-
+    try {
         if (editingId == null || editingId == -1L) {
             val course = GolfCourseModel(
                 name = name,
                 location = location,
-                holes = holes
+                holes = holes,
+                imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.create(course)
 
@@ -152,7 +161,8 @@ class AddEditActivity : AppCompatActivity() {
                 id = editingId!!,
                 name = name,
                 location = location,
-                holes = holes
+                holes = holes,
+                imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.update(course)
 
@@ -162,6 +172,10 @@ class AddEditActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    } catch (e: IllegalArgumentException) {
+        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        return
+    }
         finish()
     }
 }
