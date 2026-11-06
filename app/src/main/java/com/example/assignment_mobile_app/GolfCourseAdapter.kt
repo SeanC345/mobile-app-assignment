@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.net.Uri
+import android.widget.ImageView
 import com.example.assignment_mobile_app.models.GolfCourseModel
 
 class GolfCourseAdapter(
@@ -18,6 +20,8 @@ class GolfCourseAdapter(
         val nameText: TextView = view.findViewById(R.id.nameText)
         val locationText: TextView = view.findViewById(R.id.locationText)
         val holesText: TextView = view.findViewById(R.id.holesText)
+
+        val courseImage: ImageView = view.findViewById(R.id.courseImage)
 
         val editButton: Button = view.findViewById(R.id.editButton)
         val deleteButton: Button = view.findViewById(R.id.deleteButton)
@@ -39,6 +43,14 @@ class GolfCourseAdapter(
         holder.nameText.text = course.name
         holder.locationText.text = course.location
         holder.holesText.text = "${course.holes} Holes"
+
+        val imageUri = course.imageUri
+
+        if (imageUri != null) {
+            holder.courseImage.setImageURI(Uri.parse(imageUri))
+        } else {
+            holder.courseImage.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
 
         holder.editButton.setOnClickListener {
             onEdit(course)
