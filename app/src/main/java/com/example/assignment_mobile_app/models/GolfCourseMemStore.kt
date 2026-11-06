@@ -12,17 +12,20 @@ class GolfCourseMemStore : GolfCourseStore {
     }
 
     override fun create(course: GolfCourseModel) {
+        course.validate()
         course.id = lastId.incrementAndGet()
         courses.add(course)
     }
 
     override fun update(course: GolfCourseModel): Boolean{
+        course.validate()
         val foundCourse = findOne(course.id)
 
         return if (foundCourse != null){
             foundCourse.name = course.name
             foundCourse.location = course.location
             foundCourse.holes = course.holes
+            foundCourse.imageUri = course.imageUri
             true
         } else {
             false

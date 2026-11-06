@@ -10,6 +10,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 import android.widget.Toast
+import android.net.Uri
+import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assignment_mobile_app.models.GolfCourseModel
 
@@ -22,10 +25,35 @@ class AddEditActivity : AppCompatActivity() {
 
     private var editingId: Long? = null
 
+    private lateinit var imagePreview: ImageView
+    private var selectedImageUri: Uri?= null
+
+    private val imagePicker =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            if (uri != null) {
+                try {
+                    contentResolver.takePersistableUriPermission(
+                        uri,
+                        android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                } catch (_: SecurityException) {
+
+                }
+                selectedImageUri = uri
+                imagePreview.setImageURI(uri)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_edit)
+
+        imagePreview = findViewById(R.id.imageViewAdd)
+
+        findViewById<Button>(R.id.imagePickButton).setOnClickListener {
+            imagePicker.launch(arrayOf("image/*"))
+        }
 
         val rootLayout = findViewById<View>(R.id.addEditLayout)
         val originalTopPadding = rootLayout.paddingTop
@@ -90,6 +118,14 @@ class AddEditActivity : AppCompatActivity() {
         }else {
             holesSpinner.setSelection(1)
         }
+
+        selectedImageUri = course.imageUri?.let { Uri.parse(it) }
+
+        if (selectedImageUri != null) {
+            imagePreview.setImageURI(selectedImageUri)
+        } else{
+            imagePreview.setImageResource(android.R.drawable.ic_menu_gallery)
+        }
     }
 
     private fun saveCourse() {
@@ -105,12 +141,13 @@ class AddEditActivity : AppCompatActivity() {
         } else {
             18
         }
-
+    try {
         if (editingId == null || editingId == -1L) {
             val course = GolfCourseModel(
                 name = name,
                 location = location,
-                holes = holes
+                holes = holes,
+                imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.create(course)
 
@@ -124,7 +161,8 @@ class AddEditActivity : AppCompatActivity() {
                 id = editingId!!,
                 name = name,
                 location = location,
-                holes = holes
+                holes = holes,
+                imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.update(course)
 
@@ -134,6 +172,10 @@ class AddEditActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    } catch (e: IllegalArgumentException) {
+        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        return
+    }
         finish()
     }
 }
