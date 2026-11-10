@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.net.Uri
 import android.widget.ImageView
+import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assignment_mobile_app.models.GolfCourseModel
@@ -22,6 +23,11 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var locationInput: EditText
     private lateinit var holesSpinner: Spinner
     private lateinit var formTitle: TextView
+
+    private lateinit var latitudeInput: EditText
+    private lateinit var longitudeInput: EditText
+    private var selectedLatitude: Double? = null
+    private var selectedLongitude: Double? = null
 
     private var editingId: Long? = null
 
@@ -74,7 +80,44 @@ class AddEditActivity : AppCompatActivity() {
         nameInput = findViewById(R.id.nameInput)
         locationInput = findViewById(R.id.locationInput)
         holesSpinner = findViewById(R.id.holesSpinner)
+        latitudeInput = findViewById(R.id.latitudeInput)
+        longitudeInput = findViewById(R.id.longitudeInput)
 
+        val mapPicker =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val data = result.data ?: return@registerForActivityResult
+
+                    selectedLatitude = data.getDoubleExtra("latitude", 0.0)
+                    selectedLongitude = data.getDoubleExtra("longitude", 0.0)
+
+                    selectedLatitude?.let {
+                        latitudeInput.setText(it.toString())
+                    }
+
+                    selectedLongitude?.let {
+                        longitudeInput.setText(it.toString())
+                    }
+                }
+            }
+
+        findViewById<Button>(R.id.buttonLoc).setOnClickListener {
+            val intent = Intent(this,MapPickerActivity::class.java)
+
+            latitudeInput.text.toString().toDoubleOrNull()?.let {
+                intent.putExtra("latitude",it)
+            }
+
+            longitudeInput.text.toString().toDoubleOrNull()?.let {
+                intent.putExtra("longitude",it)
+            }
+
+            intent.putExtra("title", nameInput.text.toString())
+
+            mapPicker.launch(intent)
+        }
         val saveButton = findViewById<Button>(R.id.saveButton)
         val cancelButton = findViewById<Button>(R.id.cancelButton)
 
@@ -113,6 +156,8 @@ class AddEditActivity : AppCompatActivity() {
 
         nameInput.setText(course.name)
         locationInput.setText(course.location)
+        latitudeInput.setText(course.latitude.toString())
+        longitudeInput.setText(course.longitude.toString())
         if (course.holes == 9) {
             holesSpinner.setSelection(0)
         }else {
@@ -131,6 +176,18 @@ class AddEditActivity : AppCompatActivity() {
     private fun saveCourse() {
         val name = nameInput.text.toString().trim()
         val location = locationInput.text.toString().trim()
+        val latitude = latitudeInput.text.toString().toDoubleOrNull()
+        val longitude = longitudeInput.text.toString().toDoubleOrNull()
+
+        if (latitude == null) {
+            latitudeInput.error = "Select a location"
+            return
+        }
+
+        if (longitude == null) {
+            longitudeInput.error = "Select a location"
+            return
+        }
 
         if (name.isEmpty()) {
             nameInput.error = "Course name is required"
@@ -147,6 +204,8 @@ class AddEditActivity : AppCompatActivity() {
                 name = name,
                 location = location,
                 holes = holes,
+                latitude = latitude,
+                longitude = longitude,
                 imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.create(course)
@@ -162,6 +221,8 @@ class AddEditActivity : AppCompatActivity() {
                 name = name,
                 location = location,
                 holes = holes,
+                latitude = latitude,
+                longitude = longitude,
                 imageUri = selectedImageUri?.toString()
             )
             AppData.golfCourses.update(course)

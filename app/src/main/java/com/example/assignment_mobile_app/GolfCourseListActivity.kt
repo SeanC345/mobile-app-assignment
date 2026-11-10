@@ -56,7 +56,8 @@ class GolfCourseListActivity : AppCompatActivity() {
         adapter = GolfCourseAdapter(
             AppData.golfCourses.findAll(),
             onEdit = { course -> editCourse(course) },
-            onDelete = { course -> deleteCourse(course) }
+            onDelete = { course -> deleteCourse(course) },
+            onViewMap = { course -> viewCourseOnMap(course)}
         )
         recyclerView.adapter = adapter
 
@@ -106,6 +107,17 @@ class GolfCourseListActivity : AppCompatActivity() {
     private fun editCourse(course: GolfCourseModel) {
         val intent = Intent(this, AddEditActivity::class.java)
         intent.putExtra("id", course.id)
+        startActivity(intent)
+    }
+
+    private fun viewCourseOnMap(course: GolfCourseModel) {
+        val intent = Intent(this, MapPickerActivity::class.java)
+
+        intent.putExtra("latitude", course.latitude)
+        intent.putExtra("longitude",course.longitude)
+        intent.putExtra("title",course.name)
+        intent.putExtra("viewOnly",true)
+
         startActivity(intent)
     }
 
