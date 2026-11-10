@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/addEditLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+    android:id="@+id/addEditLayout"
     android:background="@color/golf_cream"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp">
 
@@ -53,6 +58,28 @@
         android:entries="@array/hole_options"
         android:minHeight="48dp" />
 
+    <EditText
+        android:id="@+id/latitudeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Latitude"
+        android:inputType="numberDecimal|numberSigned"
+        android:minHeight="48dp"/>
+
+    <EditText
+        android:id="@+id/longitudeInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitude"
+        android:inputType="numberDecimal|numberSigned"
+        android:minHeight="48dp"/>
+
+    <Button
+        android:id="@+id/buttonLoc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Location on Map"/>
+
     <ImageView
         android:id="@+id/imageViewAdd"
         android:layout_width="match_parent"
@@ -82,4 +109,6 @@
         android:backgroundTint="@color/golf_green"
         android:text="Cancel"
         android:textColor="@color/white" />
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
