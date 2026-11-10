@@ -25,6 +25,10 @@ class MapPickerActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_map_picker)
 
+        val viewOnly = intent.getBooleanExtra("viewOnly", false)
+        val confirmButton = findViewById<Button>(R.id.confirmLocationButton)
+
+
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
@@ -39,30 +43,41 @@ class MapPickerActivity : AppCompatActivity() {
         setSelectedPoint(start)
         showExistingMarkers()
 
-        val receiver = object : MapEventsReceiver {
+        if (!viewOnly) {
+            val receiver = object : MapEventsReceiver {
 
-            override fun singleTapConfirmedHelper(point: GeoPoint): Boolean {
-                setSelectedPoint(point)
-                return true
+                override fun singleTapConfirmedHelper(point: GeoPoint): Boolean {
+                    setSelectedPoint(point)
+                    return true
+                }
+
+                override fun longPressHelper(point: GeoPoint): Boolean {
+                    setSelectedPoint(point)
+                    return true
+                }
             }
 
-            override fun longPressHelper(point: GeoPoint): Boolean {
-                setSelectedPoint(point)
-                return true
-            }
+            map.overlays.add(MapEventsOverlay(receiver))
         }
+        if (viewOnly) {
+            confirmButton.text = "Return"
 
-        map.overlays.add(MapEventsOverlay(receiver))
+            confirmButton.setOnClickListener {
+                finish()
+            }
+        } else {
+            confirmButton.text = "Use This Location"
 
-        findViewById<Button>(R.id.confirmLocationButton).setOnClickListener {
-            val point = selectedPoint ?: return@setOnClickListener
+            confirmButton.setOnClickListener {
+                val point = selectedPoint ?: return@setOnClickListener
 
-            val result = intent
-                .putExtra("latitude", point.latitude)
-                .putExtra("longitude", point.longitude)
+                val result = intent
+                    .putExtra("latitude", point.latitude)
+                    .putExtra("longitude", point.longitude)
 
-            setResult(Activity.RESULT_OK, result)
-            finish()
+                setResult(Activity.RESULT_OK, result)
+                finish()
+            }
         }
     }
 

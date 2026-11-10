@@ -47,6 +47,14 @@
         android:textColor="@color/white" />
 
     <Button
+        android:id="@+id/viewMapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/golf_green"
+        android:text="View on Map"
+        android:textColor="@color/white" />
+
+    <Button
         android:id="@+id/deleteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

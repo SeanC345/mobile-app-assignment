@@ -13,7 +13,8 @@ import com.example.assignment_mobile_app.models.GolfCourseModel
 class GolfCourseAdapter(
     private var courses: List<GolfCourseModel>,
     private val onEdit: (GolfCourseModel) -> Unit,
-    private val onDelete: (GolfCourseModel) -> Unit
+    private val onDelete: (GolfCourseModel) -> Unit,
+    private val onViewMap: (GolfCourseModel) -> Unit
 ) : RecyclerView.Adapter<GolfCourseAdapter.CourseViewHolder>(){
 
     class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view){
@@ -25,6 +26,7 @@ class GolfCourseAdapter(
 
         val editButton: Button = view.findViewById(R.id.editButton)
         val deleteButton: Button = view.findViewById(R.id.deleteButton)
+        val viewMapButton: Button = view.findViewById(R.id.viewMapButton)
     }
 
     override fun onCreateViewHolder(
@@ -54,6 +56,10 @@ class GolfCourseAdapter(
 
         holder.editButton.setOnClickListener {
             onEdit(course)
+        }
+
+        holder.viewMapButton.setOnClickListener {
+            onViewMap(course)
         }
 
         holder.deleteButton.setOnClickListener {
