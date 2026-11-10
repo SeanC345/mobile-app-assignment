@@ -25,6 +25,8 @@ class GolfCourseMemStore : GolfCourseStore {
             foundCourse.name = course.name
             foundCourse.location = course.location
             foundCourse.holes = course.holes
+            foundCourse.latitude = course.latitude
+            foundCourse.longitude = course.longitude
             foundCourse.imageUri = course.imageUri
             true
         } else {
