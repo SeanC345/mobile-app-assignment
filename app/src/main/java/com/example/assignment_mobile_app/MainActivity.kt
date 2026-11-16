@@ -25,5 +25,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddEditActivity::class.java)
             startActivity(intent)
         }
+        AppData.initialize(this)
     }
 }

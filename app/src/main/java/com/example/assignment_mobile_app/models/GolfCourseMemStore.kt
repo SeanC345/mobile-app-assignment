@@ -1,11 +1,41 @@
 package com.example.assignment_mobile_app.models
 
 import java.util.concurrent.atomic.AtomicLong
+import java.io.File
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
-class GolfCourseMemStore : GolfCourseStore {
+class GolfCourseMemStore(private val file: File) : GolfCourseStore {
 
     private val courses = ArrayList<GolfCourseModel>()
     private val lastId = AtomicLong(0L)
+
+    private val gson = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
+
+    init {
+        load()
+    }
+
+    private fun load() {
+        if (!file.exists()) return
+
+        val type = object : TypeToken<ArrayList<GolfCourseModel>>() {}.type
+
+        val loaded: ArrayList<GolfCourseModel> =
+            gson.fromJson(file.readText(), type) ?: arrayListOf()
+
+        courses.clear()
+        courses.addAll(loaded)
+
+        lastId.set(courses.maxOfOrNull { it.id } ?: 0L)
+    }
+
+    private fun save() {
+        file.parentFile?.mkdirs()
+        file.writeText(gson.toJson(courses))
+    }
 
     override fun findAll(): List<GolfCourseModel> {
         return courses
@@ -15,6 +45,7 @@ class GolfCourseMemStore : GolfCourseStore {
         course.validate()
         course.id = lastId.incrementAndGet()
         courses.add(course)
+        save()
     }
 
     override fun update(course: GolfCourseModel): Boolean{
@@ -28,6 +59,7 @@ class GolfCourseMemStore : GolfCourseStore {
             foundCourse.latitude = course.latitude
             foundCourse.longitude = course.longitude
             foundCourse.imageUri = course.imageUri
+            save()
             true
         } else {
             false
@@ -39,6 +71,7 @@ class GolfCourseMemStore : GolfCourseStore {
 
         return if (foundCourse != null) {
             courses.remove(foundCourse)
+            save()
             true
         } else{
             false
