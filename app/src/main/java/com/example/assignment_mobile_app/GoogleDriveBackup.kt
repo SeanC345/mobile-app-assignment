@@ -58,4 +58,65 @@ class GoogleDriveBackup(private val context: Context) {
             }
         }.start()
     }
+
+    fun restore(file: File, accessToken: String) {
+
+        val requestInitializer = HttpRequestInitializer { request ->
+            request.headers.authorization = "Bearer $accessToken"
+        }
+
+        val driveService = Drive.Builder(
+            NetHttpTransport(),
+            GsonFactory.getDefaultInstance(),
+            requestInitializer
+        )
+            .setApplicationName("Golf Course Finder")
+            .build()
+
+        Thread {
+            try {
+                val result = driveService.files().list()
+                    .setQ("name = 'golf_courses.json' and trashed = false")
+                    .setFields("files(id, name)")
+                    .execute()
+
+                val driveFile = result.files.firstOrNull()
+
+                if (driveFile != null) {
+                    file.outputStream().use { outputStream ->
+                        driveService.files()
+                            .get(driveFile.id)
+                            .executeMediaAndDownloadTo(outputStream)
+                    }
+
+                    AppData.golfCourses.load()
+
+                    (context as Activity).runOnUiThread {
+                        Toast.makeText(
+                            context,
+                            "Restore successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    (context as Activity).runOnUiThread {
+                        Toast.makeText(
+                            context,
+                            "No backup found",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+            } catch (e: Exception) {
+                (context as Activity).runOnUiThread {
+                    Toast.makeText(
+                        context,
+                        "Restore failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }.start()
+    }
 }

@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
         val backupButton =
             findViewById<Button>(R.id.backupButton)
 
+        val restoreButton =
+            findViewById<Button>(R.id.restoreButton)
+
         viewCoursesButton.setOnClickListener {
             val intent = Intent(this, GolfCourseListActivity::class.java)
             startActivity(intent)
@@ -65,6 +68,10 @@ class MainActivity : AppCompatActivity() {
 
         backupButton.setOnClickListener {
             requestDriveAccess()
+        }
+
+        restoreButton.setOnClickListener {
+            requestDriveRestoreAccess()
         }
 
         AppData.initialize(this)
@@ -95,6 +102,45 @@ class MainActivity : AppCompatActivity() {
 
                     if (accessToken != null) {
                         GoogleDriveBackup(this).backup(
+                            AppData.golfCoursesFile,
+                            accessToken
+                        )
+                    }
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    this,
+                    "Google Drive access failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun requestDriveRestoreAccess() {
+        val authorizationClient: AuthorizationClient =
+            Identity.getAuthorizationClient(this)
+
+        val driveScope =
+            Scope("https://www.googleapis.com/auth/drive.file")
+
+        val request = AuthorizationRequest.builder()
+            .setRequestedScopes(listOf(driveScope))
+            .build()
+
+        authorizationClient.authorize(request)
+            .addOnSuccessListener { result ->
+                if (result.hasResolution()) {
+                    Toast.makeText(
+                        this,
+                        "Google Drive permission required",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val accessToken = result.accessToken
+
+                    if (accessToken != null) {
+                        GoogleDriveBackup(this).restore(
                             AppData.golfCoursesFile,
                             accessToken
                         )

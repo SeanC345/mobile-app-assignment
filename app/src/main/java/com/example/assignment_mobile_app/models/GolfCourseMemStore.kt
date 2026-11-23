@@ -18,7 +18,7 @@ class GolfCourseMemStore(private val file: File) : GolfCourseStore {
         load()
     }
 
-    private fun load() {
+    fun load() {
         if (!file.exists()) return
 
         val type = object : TypeToken<ArrayList<GolfCourseModel>>() {}.type
