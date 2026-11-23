@@ -55,4 +55,22 @@
         android:text="View Map"
         android:textColor="@color/white"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/backupButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Backup to Google Drive"
+        android:backgroundTint="@color/golf_green"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/restoreButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Restore from Google Drive"
+        android:backgroundTint="@color/golf_green"
+        android:textColor="@android:color/white" />
 </LinearLayout>
