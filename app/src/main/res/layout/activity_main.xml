@@ -45,4 +45,14 @@
         android:text="Add Course"
         android:textColor="@color/white"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/viewMapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/golf_green"
+        android:text="View Map"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 </LinearLayout>
