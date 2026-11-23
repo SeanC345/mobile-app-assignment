@@ -1,5 +1,4 @@
 package com.example.assignment_mobile_app
-import android.annotation.SuppressLint
 import android.widget.Button
 import android.widget.LinearLayout
 import android.os.Bundle
@@ -49,18 +48,33 @@ class AddEditActivity : AppCompatActivity() {
                 imagePreview.setImageURI(uri)
             }
         }
+    private val mapPicker =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
 
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data ?: return@registerForActivityResult
+
+                selectedLatitude = data.getDoubleExtra("latitude", 0.0)
+                selectedLongitude = data.getDoubleExtra("longitude", 0.0)
+
+                selectedLatitude?.let {
+                    latitudeInput.setText(it.toString())
+                }
+
+                selectedLongitude?.let {
+                    longitudeInput.setText(it.toString())
+                }
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_edit)
-
-        imagePreview = findViewById(R.id.imageViewAdd)
-
-        findViewById<Button>(R.id.imagePickButton).setOnClickListener {
-            imagePicker.launch(arrayOf("image/*"))
-        }
-
+        setupViews()
+        setupButtons()
+        setupMapButton()
         val rootLayout = findViewById<View>(R.id.addEditLayout)
         val originalTopPadding = rootLayout.paddingTop
 
@@ -76,59 +90,6 @@ class AddEditActivity : AppCompatActivity() {
 
             insets
         }
-
-        nameInput = findViewById(R.id.nameInput)
-        locationInput = findViewById(R.id.locationInput)
-        holesSpinner = findViewById(R.id.holesSpinner)
-        latitudeInput = findViewById(R.id.latitudeInput)
-        longitudeInput = findViewById(R.id.longitudeInput)
-
-        val mapPicker =
-            registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
-            ) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val data = result.data ?: return@registerForActivityResult
-
-                    selectedLatitude = data.getDoubleExtra("latitude", 0.0)
-                    selectedLongitude = data.getDoubleExtra("longitude", 0.0)
-
-                    selectedLatitude?.let {
-                        latitudeInput.setText(it.toString())
-                    }
-
-                    selectedLongitude?.let {
-                        longitudeInput.setText(it.toString())
-                    }
-                }
-            }
-
-        findViewById<Button>(R.id.buttonLoc).setOnClickListener {
-            val intent = Intent(this,MapPickerActivity::class.java)
-
-            latitudeInput.text.toString().toDoubleOrNull()?.let {
-                intent.putExtra("latitude",it)
-            }
-
-            longitudeInput.text.toString().toDoubleOrNull()?.let {
-                intent.putExtra("longitude",it)
-            }
-
-            intent.putExtra("title", nameInput.text.toString())
-
-            mapPicker.launch(intent)
-        }
-        val saveButton = findViewById<Button>(R.id.saveButton)
-        val cancelButton = findViewById<Button>(R.id.cancelButton)
-
-        saveButton.setOnClickListener {
-            saveCourse()
-        }
-
-        cancelButton.setOnClickListener {
-            finish()
-        }
-
         formTitle = findViewById(R.id.formTitle)
 
         editingId = intent.getLongExtra("id", -1L)
@@ -139,7 +100,48 @@ class AddEditActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupViews() {
+        nameInput = findViewById(R.id.nameInput)
+        locationInput = findViewById(R.id.locationInput)
+        holesSpinner = findViewById(R.id.holesSpinner)
+        latitudeInput = findViewById(R.id.latitudeInput)
+        longitudeInput = findViewById(R.id.longitudeInput)
+        formTitle = findViewById(R.id.formTitle)
+        imagePreview = findViewById(R.id.imageViewAdd)
+    }
 
+    private fun setupButtons() {
+
+        findViewById<Button>(R.id.imagePickButton).setOnClickListener {
+            imagePicker.launch(arrayOf("image/*"))
+        }
+
+        findViewById<Button>(R.id.saveButton).setOnClickListener {
+            saveCourse()
+        }
+
+        findViewById<Button>(R.id.cancelButton).setOnClickListener {
+            finish()
+        }
+    }
+    private fun setupMapButton() {
+
+        findViewById<Button>(R.id.buttonLoc).setOnClickListener {
+            val intent = Intent(this, MapPickerActivity::class.java)
+
+            latitudeInput.text.toString().toDoubleOrNull()?.let {
+                intent.putExtra("latitude", it)
+            }
+
+            longitudeInput.text.toString().toDoubleOrNull()?.let {
+                intent.putExtra("longitude", it)
+            }
+
+            intent.putExtra("title", nameInput.text.toString())
+
+            mapPicker.launch(intent)
+        }
+    }
     private fun loadExistingCourse(id: Long){
         val course = AppData.golfCourses.findOne(id)
 
@@ -172,7 +174,6 @@ class AddEditActivity : AppCompatActivity() {
             imagePreview.setImageResource(android.R.drawable.ic_menu_gallery)
         }
     }
-
     private fun saveCourse() {
         val name = nameInput.text.toString().trim()
         val location = locationInput.text.toString().trim()
