@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation("org.osmdroid:osmdroid-android:6.1.20")
     implementation("com.google.code.gson:gson:2.13.2")
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
