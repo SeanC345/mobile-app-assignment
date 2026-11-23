@@ -31,6 +31,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    packaging {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
 }
 
 dependencies {
@@ -41,6 +48,9 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.20")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("com.google.android.gms:play-services-auth:21.4.0")
+    implementation("com.google.apis:google-api-services-drive:v3-rev20261106-2.9.2")
+    implementation("com.google.api-client:google-api-client-android:2.8.1")
+    implementation("com.google.api-client:google-api-client-gson:2.8.1")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)

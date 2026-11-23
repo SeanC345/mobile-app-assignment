@@ -9,12 +9,15 @@ object AppData {
     lateinit var golfCourses: GolfCourseMemStore
         private set
 
+    lateinit var golfCoursesFile: File
+        private set
+
     fun initialize(context: Context) {
-        val file = File(
+        golfCoursesFile = File(
             context.filesDir,
             "golf_courses.json"
         )
 
-        golfCourses = GolfCourseMemStore(file)
+        golfCourses = GolfCourseMemStore(golfCoursesFile)
     }
 }

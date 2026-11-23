@@ -91,11 +91,14 @@ class MainActivity : AppCompatActivity() {
 
                     driveAuthorizationLauncher.launch(intentSenderRequest)
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Google Drive access granted",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val accessToken = result.accessToken
+
+                    if (accessToken != null) {
+                        GoogleDriveBackup(this).backup(
+                            AppData.golfCoursesFile,
+                            accessToken
+                        )
+                    }
                 }
             }
             .addOnFailureListener {
