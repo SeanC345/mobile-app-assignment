@@ -44,28 +44,35 @@ class GolfCourseListActivity : AppCompatActivity() {
 
             insets
         }
-
-        recyclerView = findViewById(R.id.courseRecyclerView)
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         searchInput = findViewById(R.id.searchInput)
         noResultsText = findViewById(R.id.noResultsText)
         filterSpinner = findViewById(R.id.filterSpinner)
 
-        adapter = GolfCourseAdapter(
-            AppData.golfCourses.findAll(),
-            onEdit = { course -> editCourse(course) },
-            onDelete = { course -> deleteCourse(course) },
-            onViewMap = { course -> viewCourseOnMap(course)}
-        )
-        recyclerView.adapter = adapter
+        setupRecyclerView()
 
         val returnButton = findViewById<Button>(R.id.returnButton)
 
         returnButton.setOnClickListener {
             finish()
         }
+        setupFilters()
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView = findViewById(R.id.courseRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        adapter = GolfCourseAdapter(
+            AppData.golfCourses.findAll(),
+            onEdit = { course -> editCourse(course) },
+            onDelete = { course -> deleteCourse(course) },
+            onViewMap = { course -> viewCourseOnMap(course) }
+        )
+
+        recyclerView.adapter = adapter
+    }
+
+    private fun setupFilters() {
 
         searchInput.addTextChangedListener(object : TextWatcher {
 
@@ -90,19 +97,21 @@ class GolfCourseListActivity : AppCompatActivity() {
             }
         })
 
-        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ){
-                updateCourses()
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?){
+        filterSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
 
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    updateCourses()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
             }
-        }
     }
     private fun editCourse(course: GolfCourseModel) {
         val intent = Intent(this, AddEditActivity::class.java)
