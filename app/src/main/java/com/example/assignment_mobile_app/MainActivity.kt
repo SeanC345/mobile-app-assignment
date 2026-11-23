@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity() {
         val addCourseButton =
             findViewById<Button>(R.id.addCoursebutton)
 
+        val viewMapButton =
+            findViewById<Button>(R.id.viewMapButton)
+
         viewCoursesButton.setOnClickListener {
             val intent = Intent(this, GolfCourseListActivity::class.java)
             startActivity(intent)
@@ -25,6 +28,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddEditActivity::class.java)
             startActivity(intent)
         }
+
+        viewMapButton.setOnClickListener {
+            val intent = Intent(this, MapListActivity::class.java)
+            startActivity(intent)
+        }
+
         AppData.initialize(this)
     }
 }
