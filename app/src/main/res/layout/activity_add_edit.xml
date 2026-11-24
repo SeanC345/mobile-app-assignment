@@ -3,112 +3,202 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/golf_cream"
     android:fillViewport="true">
 
-    <LinearLayout
-    android:id="@+id/addEditLayout"
-    android:background="@color/golf_cream"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addEditLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/formTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Add Golf Course"
-        android:textColor="@color/golf_green"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/formTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Add Golf Course"
+            android:textColor="@color/golf_green"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/nameInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Golf Course Name"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Golf Course Name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/formTitle" />
 
-    <EditText
-        android:id="@+id/locationInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Location"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/locationInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Location"
+            android:inputType="text"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameInput" />
 
-    <TextView
-        android:id="@+id/holesLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Number of Holes"
-        android:textColor="@color/dark_text"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/holesLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Number of Holes"
+            android:textColor="@color/dark_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationInput" />
 
-    <Spinner
-        android:id="@+id/holesSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/hole_options"
-        android:minHeight="48dp" />
+        <Spinner
+            android:id="@+id/holesSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/hole_options"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/holesLabel" />
 
-    <EditText
-        android:id="@+id/latitudeInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Latitude"
-        android:inputType="numberDecimal|numberSigned"
-        android:minHeight="48dp"/>
+        <TextView
+            android:id="@+id/locationLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Map Location"
+            android:textColor="@color/dark_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/holesSpinner" />
 
-    <EditText
-        android:id="@+id/longitudeInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Longitude"
-        android:inputType="numberDecimal|numberSigned"
-        android:minHeight="48dp"/>
+        <EditText
+            android:id="@+id/latitudeInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
+            android:hint="Latitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toStartOf="@id/longitudeInput"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationLabel" />
 
-    <Button
-        android:id="@+id/buttonLoc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select Location on Map"/>
+        <EditText
+            android:id="@+id/longitudeInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:hint="Longitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@id/latitudeInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/latitudeInput"
+            app:layout_constraintTop_toTopOf="@id/latitudeInput" />
 
-    <ImageView
-        android:id="@+id/imageViewAdd"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        <Button
+            android:id="@+id/buttonLoc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/golf_green"
+            android:text="Select Location on Map"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/latitudeInput" />
 
-    <Button
-        android:id="@+id/imagePickButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select Image" />
+        <TextView
+            android:id="@+id/imageLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Course Image"
+            android:textColor="@color/dark_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonLoc" />
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/golf_green"
-        android:text="Save"
-        android:textColor="@color/white" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/imageCard"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageLabel"
+            app:strokeColor="@color/golf_green"
+            app:strokeWidth="1dp">
 
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/golf_green"
-        android:text="Cancel"
-        android:textColor="@color/white" />
+            <ImageView
+                android:id="@+id/imageViewAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Golf course image"
+                android:scaleType="centerCrop"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
 
-    </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/imagePickButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/golf_green"
+            android:text="Select Image"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageCard" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/golf_green"
+            android:text="Save"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cancelButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imagePickButton" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:backgroundTint="@color/golf_green"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/saveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/saveButton"
+            app:layout_constraintTop_toTopOf="@id/saveButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
