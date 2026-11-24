@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="golf_green">#66BB6A</color>
+    <color name="golf_green_light">#1B2E1D</color>
+    <color name="golf_cream">#121212</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="dark_text">#E8E8E8</color>
+
+    <color name="delete_red">#EF5350</color>
+
+</resources>

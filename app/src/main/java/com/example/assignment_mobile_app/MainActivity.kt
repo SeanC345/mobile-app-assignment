@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.identity.AuthorizationClient
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.Identity
+import android.content.res.Configuration
 import com.google.android.gms.common.api.Scope
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,8 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         installSplashScreen()
+        applySavedTheme()
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
         val viewCoursesButton =
@@ -75,6 +77,8 @@ class MainActivity : AppCompatActivity() {
         restoreButton.setOnClickListener {
             requestDriveRestoreAccess()
         }
+
+        setupThemeButton()
 
         AppData.initialize(this)
     }
@@ -156,5 +160,43 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+
+    private fun setupThemeButton() {
+        val themeButton = findViewById<Button>(R.id.themeButton)
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+
+        themeButton.setOnClickListener {
+            val currentMode =
+                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+            val darkModeEnabled =
+                currentMode != Configuration.UI_MODE_NIGHT_YES
+
+            preferences.edit()
+                .putBoolean("dark_mode", darkModeEnabled)
+                .apply()
+
+            AppCompatDelegate.setDefaultNightMode(
+                if (darkModeEnabled) {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                }
+            )
+        }
+    }
+
+    private fun applySavedTheme() {
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val darkModeEnabled = preferences.getBoolean("dark_mode", false)
+
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkModeEnabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
     }
 }
