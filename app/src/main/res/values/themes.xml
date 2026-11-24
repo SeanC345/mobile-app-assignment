@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.Assignment_Mobile_App.Splash"
+        parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">@color/golf_cream</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_golf_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Assignment_Mobile_App</item>
+
+    </style>
 </resources>

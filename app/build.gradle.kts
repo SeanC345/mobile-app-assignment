@@ -51,6 +51,7 @@ dependencies {
     implementation("com.google.apis:google-api-services-drive:v3-rev20261106-2.9.2")
     implementation("com.google.api-client:google-api-client-android:2.8.1")
     implementation("com.google.api-client:google-api-client-gson:2.8.1")
+    implementation("androidx.core:core-splashscreen:1.2.0")
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
